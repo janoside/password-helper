@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Password Helper</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		
+		<style>
+			body {
+				font-family: sans-serif;
+				background-color: #f5f5f5;
+			}
+			
+			h1 {
+				margin: 0 0 10px 0;
+				font-size: 24px;
+			}
+			
+			.center-column {
+				width: 800px;
+				margin: 25px auto;
+			}
+			
+			#encrypt-form, #decrypt-form, #new-password-form {
+				border: solid 1px #ccc;
+				padding: 15px;
+				background: #fff;
+				-webkit-border-radius: 5px;
+				   -moz-border-radius: 5px;
+					border-radius: 5px;
+				-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+				   -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+					box-shadow: 0 1px 2px rgba(0,0,0,.05);
+			}
+			
+			input[type=text], input[type=password] {
+				border: solid 1px #ccc;
+				padding: 5px;
+				width: 315px;
+				margin-right: 15px;
+				font-size: 20px;
+				margin-top: 0;
+				font-family: monospace;
+			}
+			
+			input[type=submit] {
+				margin-top: 3px;
+				padding: 6px;
+			}
+			
+			#new-password-length {
+				width: 75px;
+			}
+			#new-password {
+				width: 510px;
+			}
+			
+			.encrypt-form, .decrypt-form {
+				margin-bottom: 50px;
+			}
+			
+			.result {
+				padding-top: 25px;
+			}
+			
+			.result input[type=text] {
+				width: 98%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="center-column">
+			<form id="new-password-form">
+				<div>
+					<h1>New Password</h1>
+					<div>
+						<div style="float: left;">
+							<div class="label-wrap"><label for="new-password-length">Length</label></div>
+							<input id="new-password-length" type="text" value="20"/>
+						</div>
+						
+						<div style="float: left;">
+							<div class="label-wrap"><label for="new-password">Generated Password</label></div>
+							<input id="new-password" type="text"/>
+						</div>
+						
+						<div style="float: left; padding-top: 25px;">
+							<button id="button-new-password" class="btn btn-primary" type="submit">New Password</button>
+						</div>
+					</div>
+					<div style="clear: both;">
+						<label for="new-password-exclude-symbols"><input id="new-password-exclude-symbols" type="checkbox"/> Exclude symbols</label>
+					</div>
+				</div>
+			</form>
+			
+			<form id="encrypt-form">
+				<div>
+					<h1>Encrypt</h1>
+					<div style="float: left;">
+						<input id="encrypt-content" type="text" placeholder="Cleartext"/>
+					</div>
+					
+					<div style="float: left;">
+						<input id="encrypt-password" type="password" placeholder="Password"/>
+					</div>
+					
+					<button id="button-encrypt" class="btn btn-primary" type="submit">Encrypt</button>
+				</div>
+				<div class="result">
+					<div class="label-wrap"><label for="encrypt-result">Result</label></div>
+					<input type="text" id="encrypt-result"/>
+				</div>
+			</form>
+		
+			<form id="decrypt-form">
+				<div>
+					<h1>Decrypt</h1>
+					<div style="float: left;">
+						<input id="decrypt-content" type="text" placeholder="Ciphertext"/>
+					</div>
+					
+					<div style="float: left;">
+						<input id="decrypt-password" type="password" placeholder="Password"/>
+					</div>
+					
+					<button id="button-decrypt" class="btn btn-primary" type="submit">Decrypt</button>
+				</div>
+				<div class="result">
+					<div class="label-wrap"><label for="decrypt-result">Result</label></div>
+					<input type="text" id="decrypt-result"/>
+				</div>
+			</form>
+		</div>
+		
+		<script src="jquery.min.js"></script>
+		<script src="sjcl.js"></script>
+		<script src="jquery.base64.js"></script>
+		<script src="index.js"></script>
+		<script src="bootstrap/js/bootstrap.js"></script>
+
+		<script>
+			var characterSet1 = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%^&*()-_~[]{};:,.<>/?+=";
+			var characterSet2 = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+			
+			function randomPassword(length) {
+				var password = "";
+				var excludeSymbols = $("#new-password-exclude-symbols").is(":checked");
+				
+				for (i = 0; i < length; i++) {
+					if (excludeSymbols) {
+						password += characterSet2.charAt(Math.floor(Math.random() * characterSet2.length));
+					} else {
+						var ind = Math.random() * characterSet1.length;
+						var flor = Math.floor(ind);
+						var char = characterSet1.charAt(flor);
+						password += char;
+					}
+				}
+				
+				return password;
+			}
+			
+			$(document).ready(function() {
+				$("#new-password-form").submit(function() {
+					var pwdLength = $("#new-password-length").val();
+					var pwd = randomPassword(pwdLength);
+					$("#new-password").val(pwd);
+					
+					return false;
+				});
+				
+				$("#encrypt-form").submit(function() {
+					var plaintext = $("#encrypt-content").val();
+					var password = $("#encrypt-password").val();
+					
+					var result = aes_encrypt(plaintext, password, 256, 250000);
+					
+					$("#encrypt-result").val(result);
+					
+					return false;
+				});
+				
+				$("#decrypt-form").submit(function() {
+					var ciphertext = $("#decrypt-content").val();
+					var password = $("#decrypt-password").val();
+					
+					var result = aes_decrypt(ciphertext, password);
+					
+					$("#decrypt-result").val("" + result);
+					
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>
+
