@@ -1,4 +1,4 @@
-password-helper
+Password Helper
 ===============
 
 A small set of tools for managing passwords. Generate new random passwords and encrypt/decrypt passwords in your browser.
