@@ -1,7 +1,7 @@
 Password Helper
 ===============
 
-A set of simple tools for managing passwords. Generate new random passwords and encrypt/decrypt passwords in your browser.
+A set of simple tools for managing passwords in your browser.
 
 Functions
 * Generate new random passwords
