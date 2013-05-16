@@ -1,5 +1,5 @@
 function aes_encrypt(content, password, keySize, keyDerivationIterations) {
-	var salt = sjcl.random.randomWords(2);
+	var salt = sjcl.random.randomWords(2, 10);
 	var key = sjcl.misc.pbkdf2(password, salt, keyDerivationIterations, keySize);
 	var params = { "ks":keySize, "iter":keyDerivationIterations };
 	

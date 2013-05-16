@@ -153,7 +153,9 @@
 				
 				for (i = 0; i < length; i++) {
 					if (excludeSymbols) {
-						password += characterSet2.charAt(Math.floor(Math.random() * characterSet2.length));
+						var randomWord = sjcl.random.randomWords(1, 10);
+						password += characterSet2.charAt(randomWord % characterSet2.length);
+						
 					} else {
 						var ind = Math.random() * characterSet1.length;
 						var flor = Math.floor(ind);
@@ -166,6 +168,8 @@
 			}
 			
 			$(document).ready(function() {
+				sjcl.random.startCollectors();
+				
 				$("#new-password-form").submit(function() {
 					var pwdLength = $("#new-password-length").val();
 					var pwd = randomPassword(pwdLength);
