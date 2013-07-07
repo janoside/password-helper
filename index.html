@@ -151,17 +151,21 @@
 				var password = "";
 				var excludeSymbols = $("#new-password-exclude-symbols").is(":checked");
 				
+				var charSet = characterSet1;
+				if (excludeSymbols) {
+					charSet = characterSet2;
+				}
+				
 				for (i = 0; i < length; i++) {
-					if (excludeSymbols) {
-						var randomWord = sjcl.random.randomWords(1, 10);
-						password += characterSet2.charAt(randomWord % characterSet2.length);
-						
-					} else {
-						var ind = Math.random() * characterSet1.length;
-						var flor = Math.floor(ind);
-						var char = characterSet1.charAt(flor);
-						password += char;
-					}
+					var rand = sjcl.random.randomWords(1, 10)[0];
+					rand = (rand + Math.pow(2, 31));
+					rand = (rand / Math.pow(2, 32));
+					
+					var ind = rand * charSet.length;
+					var flor = Math.floor(ind);
+					var char = charSet.charAt(flor);
+					
+					password += char;
 				}
 				
 				return password;
