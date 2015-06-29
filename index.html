@@ -10,12 +10,11 @@
 		
 		<style>
 			body {
-				font-family: sans-serif;
+				font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 			}
 			
 			h1 {
 				font-size: 24px;
-				font-weight: bold;
 				color: #325d72;
 				border-bottom: solid 1px #ccc;
 			}
@@ -30,41 +29,19 @@
 			}
 			
 			input[type=text], input[type=password] {
-				border: solid 1px #ccc;
-				padding: 2px 4px;
-				width: 315px;
-				margin-right: 15px;
-				font-size: 20px;
+				padding: 4px 6px;
+				font-size: 16px;
 				margin-top: 0;
-				font-family: monospace;
-			}
-			
-			input[type=submit] {
-				margin-top: 3px;
-				padding: 6px;
-			}
-			
-			#new-password-length {
-				width: 75px;
-			}
-			#new-password {
-				width: 510px;
+				font-family: "Courier New", Courier, monospace;
+				width: 100%;
 			}
 			
 			.section-body {
 				padding: 10px 15px 0 15px;
 			}
 			
-			.encrypt-form, .decrypt-form {
-				margin-bottom: 50px;
-			}
-			
-			.result {
-				padding-top: 15px;
-			}
-			
-			.result input[type=text] {
-				width: 100%;
+			.result-row {
+				margin-top: 10px;
 			}
 			
 			label {
@@ -79,23 +56,26 @@
 					<h1>New Password</h1>
 					
 					<div class="section-body">
-						<div>
-							<div style="float: left;">
-								<div class="label-wrap"><label for="new-password-length">Length</label></div>
+						<div class="row">
+							<div class="col-lg-2">
+								<label for="new-password-length">Length</label>
 								<input id="new-password-length" type="text" value="20"/>
 							</div>
+							
+							<div class="col-lg-2">
+								<label for="new-password-symbols">Symbols</label>
+								<br/>
+								<input id="new-password-symbols" type="checkbox" checked="checked"/>
+							</div>
 						
-							<div style="float: left;">
-								<div class="label-wrap"><label for="new-password">Generated Password</label></div>
+							<div class="col-lg-5">
+								<label for="new-password">Generated Password</label>
 								<input id="new-password" type="text"/>
 							</div>
-						
-							<div style="float: left; padding-top: 25px;">
-								<button id="button-new-password" class="btn btn-primary" type="submit">New Password</button>
+							
+							<div class="col-lg-3 text-right">
+								<button id="button-new-password" class="btn btn-primary" type="submit">Generate Password</button>
 							</div>
-						</div>
-						<div style="clear: both; padding-top: 5px;">
-							<label for="new-password-exclude-symbols"><input id="new-password-exclude-symbols" type="checkbox"/> Exclude symbols</label>
 						</div>
 					</div>
 				</div>
@@ -106,26 +86,34 @@
 					<h1>
 						Encrypt
 						
-						<a class='my-tool-tip' data-toggle="tooltip" data-placement="right" data-html="true" style="font-size: 16px;" title="PBKDF2 (250k iterations)<br/>+ AES-256">
+						<a class='my-tool-tip' data-toggle="tooltip" data-placement="right" data-html="true" style="font-size: 16px;" title="PBKDF2 + AES-256">
 							<i class='glyphicon glyphicon-info-sign'></i>
 						</a>
 					</h1>
 					
 					<div class="section-body">
-						<div>
-							<div style="float: left;">
+						<div class="row">
+							<div class="col-lg-4">
 								<input id="encrypt-content" type="text" placeholder="Cleartext"/>
 							</div>
 					
-							<div style="float: left;">
+							<div class="col-lg-4">
 								<input id="encrypt-password" type="password" placeholder="Password"/>
 							</div>
-					
-							<button id="button-encrypt" class="btn btn-primary" type="submit">Encrypt</button>
+							
+							<div class="col-lg-2">
+								<input id="encrypt-kd-iterations" type="text" placeholder="250000"/>
+							</div>
+							
+							<div class="col-lg-2 text-right">
+								<button id="button-encrypt" class="btn btn-primary" type="submit">Encrypt</button>
+							</div>
 						</div>
-						<div class="result">
-							<div class="label-wrap"><label for="encrypt-result">Result</label></div>
-							<input type="text" id="encrypt-result"/>
+						<div class="row result-row">
+							<div class="col-lg-12">
+								<div class="label-wrap"><label for="encrypt-result">Result</label></div>
+								<input type="text" id="encrypt-result"/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -137,20 +125,24 @@
 					<h1>Decrypt</h1>
 					
 					<div class="section-body">
-						<div>
-							<div style="float: left;">
+						<div class="row">
+							<div class="col-lg-5">
 								<input id="decrypt-content" type="text" placeholder="Ciphertext"/>
 							</div>
 					
-							<div style="float: left;">
+							<div class="col-lg-5">
 								<input id="decrypt-password" type="password" placeholder="Password"/>
 							</div>
-					
-							<button id="button-decrypt" class="btn btn-primary" type="submit">Decrypt</button>
+							
+							<div class="col-lg-2 text-right">
+								<button id="button-decrypt" class="btn btn-primary" type="submit">Decrypt</button>
+							</div>
 						</div>
-						<div class="result">
-							<div class="label-wrap"><label for="decrypt-result">Result</label></div>
-							<input type="text" id="decrypt-result"/>
+						<div class="row result-row">
+							<div class="col-lg-12">
+								<div class="label-wrap"><label for="decrypt-result">Result</label></div>
+								<input type="text" id="decrypt-result"/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -169,11 +161,11 @@
 			
 			function randomPassword(length) {
 				var password = "";
-				var excludeSymbols = $("#new-password-exclude-symbols").is(":checked");
+				var allowSymbols = $("#new-password-symbols").is(":checked");
 				
-				var charSet = characterSet1;
-				if (excludeSymbols) {
-					charSet = characterSet2;
+				var charSet = characterSet2;
+				if (allowSymbols) {
+					charSet = characterSet1;
 				}
 				
 				for (i = 0; i < length; i++) {
@@ -207,8 +199,13 @@
 				$("#encrypt-form").submit(function() {
 					var plaintext = $("#encrypt-content").val();
 					var password = $("#encrypt-password").val();
+					var kdIterations = $("#encrypt-kd-iterations").val();
 					
-					var result = aes_encrypt(plaintext, password, 256, 250000);
+					if (kdIterations == "") {
+						kdIterations = 250000;
+					}
+					
+					var result = aes_encrypt(plaintext, password, 256, kdIterations);
 					
 					$("#encrypt-result").val(result);
 					
