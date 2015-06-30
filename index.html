@@ -6,7 +6,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		
 		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 		
 		<style>
 			body {
@@ -19,16 +18,13 @@
 				border-bottom: solid 1px #ccc;
 			}
 			
-			#encrypt-form, #decrypt-form, #new-password-form {
+			#encrypt-form, #decrypt-form {
 				padding: 15px;
 			}
 			
 			input[type=text], input[type=password] {
-				padding: 4px 6px;
 				font-size: 16px;
-				margin-top: 0;
 				font-family: "Courier New", Courier, monospace;
-				width: 100%;
 			}
 			
 			.section-body {
@@ -50,62 +46,35 @@
 			</div>
 			
 			<div class="col-lg-8 col-sm-12">
-				<form id="new-password-form">
-					<div>
-						<h1>Generate</h1>
-						
-						<div class="section-body">
-							<div class="row">
-								<div class="col-lg-2 form-group">
-									<label for="new-password-length">Length</label>
-									<input id="new-password-length" type="text" class="form-control" value="20"/>
-								</div>
-								
-								<div class="col-lg-1 form-group">
-									<label for="new-password-symbols">Symbols</label>
-									<br/>
-									<input id="new-password-symbols" type="checkbox" class="form-control" checked="checked"/>
-								</div>
-								
-								<div class="col-lg-6 form-group">
-									<label for="new-password">Generated Password</label>
-									<input id="new-password" type="text" class="form-control"/>
-								</div>
-								
-								<div class="col-lg-3 text-right form-group">
-									<label>&nbsp;</label>
-									<button id="button-new-password" class="btn btn-primary btn-block" type="submit">Generate Password</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</form>
-			
 				<form id="encrypt-form">
 					<div>
 						<h1>
 							Encrypt
 							
-							<a class='my-tool-tip' data-toggle="tooltip" data-placement="right" data-html="true" style="font-size: 16px;" title="PBKDF2 + AES-256">
+							<a class='my-tooltip' data-toggle="tooltip" data-placement="right" data-html="true" style="font-size: 16px;" title="PBKDF2 + AES-256">
 								<i class='glyphicon glyphicon-info-sign'></i>
 							</a>
 						</h1>
 					
 						<div class="section-body">
 							<div class="row">
-								<div class="col-lg-4">
+								<div class="col-lg-4 form-group">
+									<label for="encrypt-content">Cleartext</label>
 									<input id="encrypt-content" type="text" class="form-control" placeholder="Cleartext"/>
 								</div>
 								
-								<div class="col-lg-4">
+								<div class="col-lg-3 form-group">
+									<label for="encrypt-password">Password</label>
 									<input id="encrypt-password" type="password" class="form-control" placeholder="Password"/>
 								</div>
 								
-								<div class="col-lg-2">
+								<div class="col-lg-3 form-group">
+									<label for="encrypt-kd-iterations">PBKDF2 Iterations</label>
 									<input id="encrypt-kd-iterations" type="text" class="form-control" placeholder="250000"/>
 								</div>
 								
-								<div class="col-lg-2 text-right">
+								<div class="col-lg-2 form-group">
+									<label>&nbsp;</label>
 									<button id="button-encrypt" class="btn btn-primary btn-block" type="submit">Encrypt</button>
 								</div>
 							</div>
@@ -117,7 +86,6 @@
 							</div>
 						</div>
 					</div>
-				
 				</form>
 		
 				<form id="decrypt-form">
@@ -126,15 +94,18 @@
 						
 						<div class="section-body">
 							<div class="row">
-								<div class="col-lg-5">
+								<div class="col-lg-5 form-group">
+									<label for="encrypt-content">Ciphertext</label>
 									<input id="decrypt-content" type="text" class="form-control" placeholder="Ciphertext"/>
 								</div>
 								
-								<div class="col-lg-5">
+								<div class="col-lg-5 form-group">
+									<label for="encrypt-content">Password</label>
 									<input id="decrypt-password" type="password" class="form-control" placeholder="Password"/>
 								</div>
 								
-								<div class="col-lg-2 text-right">
+								<div class="col-lg-2 form-group">
+									<label>&nbsp;</label>
 									<button id="button-decrypt" class="btn btn-primary btn-block" type="submit">Decrypt</button>
 								</div>
 							</div>
@@ -160,45 +131,10 @@
 		<script src="bootstrap/js/bootstrap.js"></script>
 
 		<script>
-			var characterSet1 = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%^&*()-_~[]{};:,.<>/?+=";
-			var characterSet2 = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-			
-			function randomPassword(length) {
-				var password = "";
-				var allowSymbols = $("#new-password-symbols").is(":checked");
-				
-				var charSet = characterSet2;
-				if (allowSymbols) {
-					charSet = characterSet1;
-				}
-				
-				for (i = 0; i < length; i++) {
-					var rand = sjcl.random.randomWords(1, 10)[0];
-					rand = (rand + Math.pow(2, 31));
-					rand = (rand / Math.pow(2, 32));
-					
-					var ind = rand * charSet.length;
-					var flor = Math.floor(ind);
-					var char = charSet.charAt(flor);
-					
-					password += char;
-				}
-				
-				return password;
-			}
-			
 			$(document).ready(function() {
-				$("a.my-tool-tip").tooltip();
+				$("a.my-tooltip").tooltip();
 				
 				sjcl.random.startCollectors();
-				
-				$("#new-password-form").submit(function() {
-					var pwdLength = $("#new-password-length").val();
-					var pwd = randomPassword(pwdLength);
-					$("#new-password").val(pwd);
-					
-					return false;
-				});
 				
 				$("#encrypt-form").submit(function() {
 					var plaintext = $("#encrypt-content").val();
