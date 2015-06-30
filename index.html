@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Password Helper</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		
 		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
 		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
@@ -17,11 +17,6 @@
 				font-size: 24px;
 				color: #325d72;
 				border-bottom: solid 1px #ccc;
-			}
-			
-			.center-column {
-				width: 800px;
-				margin: 25px auto;
 			}
 			
 			#encrypt-form, #decrypt-form, #new-password-form {
@@ -50,103 +45,112 @@
 		</style>
 	</head>
 	<body>
-		<div class="center-column">
-			<form id="new-password-form">
-				<div>
-					<h1>New Password</h1>
-					
-					<div class="section-body">
-						<div class="row">
-							<div class="col-lg-2">
-								<label for="new-password-length">Length</label>
-								<input id="new-password-length" type="text" value="20"/>
-							</div>
-							
-							<div class="col-lg-2">
-								<label for="new-password-symbols">Symbols</label>
-								<br/>
-								<input id="new-password-symbols" type="checkbox" checked="checked"/>
-							</div>
-						
-							<div class="col-lg-5">
-								<label for="new-password">Generated Password</label>
-								<input id="new-password" type="text"/>
-							</div>
-							
-							<div class="col-lg-3 text-right">
-								<button id="button-new-password" class="btn btn-primary" type="submit">Generate Password</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
+		<div class="row">
+			<div class="col-lg-2 col-sm-0">
+			</div>
 			
-			<form id="encrypt-form">
-				<div>
-					<h1>
-						Encrypt
+			<div class="col-lg-8 col-sm-12">
+				<form id="new-password-form">
+					<div>
+						<h1>Generate</h1>
 						
-						<a class='my-tool-tip' data-toggle="tooltip" data-placement="right" data-html="true" style="font-size: 16px;" title="PBKDF2 + AES-256">
-							<i class='glyphicon glyphicon-info-sign'></i>
-						</a>
-					</h1>
-					
-					<div class="section-body">
-						<div class="row">
-							<div class="col-lg-4">
-								<input id="encrypt-content" type="text" placeholder="Cleartext"/>
-							</div>
-					
-							<div class="col-lg-4">
-								<input id="encrypt-password" type="password" placeholder="Password"/>
-							</div>
-							
-							<div class="col-lg-2">
-								<input id="encrypt-kd-iterations" type="text" placeholder="250000"/>
-							</div>
-							
-							<div class="col-lg-2 text-right">
-								<button id="button-encrypt" class="btn btn-primary" type="submit">Encrypt</button>
-							</div>
-						</div>
-						<div class="row result-row">
-							<div class="col-lg-12">
-								<div class="label-wrap"><label for="encrypt-result">Result</label></div>
-								<input type="text" id="encrypt-result"/>
+						<div class="section-body">
+							<div class="row">
+								<div class="col-lg-2 form-group">
+									<label for="new-password-length">Length</label>
+									<input id="new-password-length" type="text" class="form-control" value="20"/>
+								</div>
+								
+								<div class="col-lg-1 form-group">
+									<label for="new-password-symbols">Symbols</label>
+									<br/>
+									<input id="new-password-symbols" type="checkbox" class="form-control" checked="checked"/>
+								</div>
+								
+								<div class="col-lg-6 form-group">
+									<label for="new-password">Generated Password</label>
+									<input id="new-password" type="text" class="form-control"/>
+								</div>
+								
+								<div class="col-lg-3 text-right form-group">
+									<label>&nbsp;</label>
+									<button id="button-new-password" class="btn btn-primary btn-block" type="submit">Generate Password</button>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</form>
+			
+				<form id="encrypt-form">
+					<div>
+						<h1>
+							Encrypt
+							
+							<a class='my-tool-tip' data-toggle="tooltip" data-placement="right" data-html="true" style="font-size: 16px;" title="PBKDF2 + AES-256">
+								<i class='glyphicon glyphicon-info-sign'></i>
+							</a>
+						</h1>
+					
+						<div class="section-body">
+							<div class="row">
+								<div class="col-lg-4">
+									<input id="encrypt-content" type="text" class="form-control" placeholder="Cleartext"/>
+								</div>
+								
+								<div class="col-lg-4">
+									<input id="encrypt-password" type="password" class="form-control" placeholder="Password"/>
+								</div>
+								
+								<div class="col-lg-2">
+									<input id="encrypt-kd-iterations" type="text" class="form-control" placeholder="250000"/>
+								</div>
+								
+								<div class="col-lg-2 text-right">
+									<button id="button-encrypt" class="btn btn-primary btn-block" type="submit">Encrypt</button>
+								</div>
+							</div>
+							<div class="row result-row">
+								<div class="col-lg-12 form-group">
+									<label for="encrypt-result">Result</label>
+									<input type="text" id="encrypt-result" class="form-control"/>
+								</div>
+							</div>
+						</div>
+					</div>
 				
-			</form>
+				</form>
 		
-			<form id="decrypt-form">
-				<div>
-					<h1>Decrypt</h1>
-					
-					<div class="section-body">
-						<div class="row">
-							<div class="col-lg-5">
-								<input id="decrypt-content" type="text" placeholder="Ciphertext"/>
+				<form id="decrypt-form">
+					<div>
+						<h1>Decrypt</h1>
+						
+						<div class="section-body">
+							<div class="row">
+								<div class="col-lg-5">
+									<input id="decrypt-content" type="text" class="form-control" placeholder="Ciphertext"/>
+								</div>
+								
+								<div class="col-lg-5">
+									<input id="decrypt-password" type="password" class="form-control" placeholder="Password"/>
+								</div>
+								
+								<div class="col-lg-2 text-right">
+									<button id="button-decrypt" class="btn btn-primary btn-block" type="submit">Decrypt</button>
+								</div>
 							</div>
-					
-							<div class="col-lg-5">
-								<input id="decrypt-password" type="password" placeholder="Password"/>
-							</div>
-							
-							<div class="col-lg-2 text-right">
-								<button id="button-decrypt" class="btn btn-primary" type="submit">Decrypt</button>
-							</div>
-						</div>
-						<div class="row result-row">
-							<div class="col-lg-12">
-								<div class="label-wrap"><label for="decrypt-result">Result</label></div>
-								<input type="text" id="decrypt-result"/>
+							<div class="row result-row">
+								<div class="col-lg-12 form-group">
+									<label for="decrypt-result">Result</label>
+									<input type="text" id="decrypt-result" class="form-control"/>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
+			
+			<div class="col-lg-2 col-sm-0">
+			</div>
 		</div>
 		
 		<script src="jquery.min.js"></script>
