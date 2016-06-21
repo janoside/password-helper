@@ -22,7 +22,7 @@
 				padding: 15px;
 			}
 			
-			input[type=text], input[type=password] {
+			input[type=text], input[type=password], textarea {
 				font-size: 16px;
 				font-family: "Courier New", Courier, monospace;
 			}
@@ -58,17 +58,19 @@
 					
 						<div class="section-body">
 							<div class="row">
-								<div class="col-lg-4 form-group">
+								<div class="col-lg-12 form-group">
 									<label for="encrypt-content">Cleartext</label>
-									<input id="encrypt-content" type="text" class="form-control" placeholder="Cleartext"/>
+									<textarea id="encrypt-content" type="text" class="form-control" placeholder="Cleartext" rows="5"></textarea>
 								</div>
-								
-								<div class="col-lg-3 form-group">
+							</div>
+							
+							<div class="row">
+								<div class="col-lg-5 form-group">
 									<label for="encrypt-password">Password</label>
 									<input id="encrypt-password" type="password" class="form-control" placeholder="Password"/>
 								</div>
 								
-								<div class="col-lg-3 form-group">
+								<div class="col-lg-5 form-group">
 									<label for="encrypt-kd-iterations">PBKDF2 Iterations</label>
 									<input id="encrypt-kd-iterations" type="text" class="form-control" placeholder="250000"/>
 								</div>
@@ -112,7 +114,7 @@
 							<div class="row result-row">
 								<div class="col-lg-12 form-group">
 									<label for="decrypt-result">Result</label>
-									<input type="text" id="decrypt-result" class="form-control"/>
+									<textarea type="text" id="decrypt-result" class="form-control" rows="5"></textarea>
 								</div>
 							</div>
 						</div>
