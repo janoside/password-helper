@@ -1,11 +1,7 @@
-Password Helper
+Encryption Helper
 ===============
 
-A set of simple tools for managing passwords in your browser.
-
-Functions
-* Generate new random passwords
-* Encrypt/Decrypt passwords (AES-256 with PBKDF2)
+A set of simple tools for encrypting/decrypting data (AES-256 with PBKDF2) in your browser.
 
 Built with
 * [SJCL](https://github.com/bitwiseshiftleft/sjcl)
