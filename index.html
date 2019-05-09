@@ -5,124 +5,86 @@
 		<title>Password Helper</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		
-		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-		
-		<style>
-			body {
-				font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-			}
-			
-			h1 {
-				font-size: 24px;
-				color: #325d72;
-				border-bottom: solid 1px #ccc;
-			}
-			
-			#encrypt-form, #decrypt-form {
-				padding: 15px;
-			}
-			
-			input[type=text], input[type=password], textarea {
-				font-size: 16px;
-				font-family: "Courier New", Courier, monospace;
-			}
-			
-			.section-body {
-				padding: 10px 15px 0 15px;
-			}
-			
-			.result-row {
-				margin-top: 10px;
-			}
-			
-			label {
-				font-weight: normal;
-			}
-		</style>
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="row">
-			<div class="col-lg-2 col-sm-0">
-			</div>
-			
-			<div class="col-lg-8 col-sm-12">
-				<form id="encrypt-form">
-					<div>
-						<h1>
-							Encrypt
-							
-							<a class='my-tooltip' data-toggle="tooltip" data-placement="right" data-html="true" style="font-size: 16px;" title="PBKDF2 + AES-256">
-								<i class='glyphicon glyphicon-info-sign'></i>
-							</a>
-						</h1>
-					
-						<div class="section-body">
-							<div class="row">
-								<div class="col-lg-12 form-group">
-									<label for="encrypt-content">Cleartext</label>
-									<textarea id="encrypt-content" type="text" class="form-control" placeholder="Cleartext" rows="5"></textarea>
+		<div class="container">
+			<h1 class="my-4">Encryption Helper</h1>
+
+			<ul class="nav nav-tabs" id="tabNav" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="decrypt-tab" data-toggle="tab" href="#decrypt" role="tab" aria-controls="decrypt" aria-selected="false">Decrypt Data</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="encrypt-tab" data-toggle="tab" href="#encrypt" role="tab" aria-controls="encrypt" aria-selected="true">Encrypt Data</a>
+				</li>
+			</ul>
+			<div class="tab-content pt-4">
+				<div class="tab-pane" id="encrypt" role="tabpanel" aria-labelledby="encrypt-tab">
+					<form id="encrypt-form">
+						<div>
+							<div class="section-body">
+								<div class="form-group">
+									<label for="encrypt-content">Data to Encrypt</label>
+									<textarea id="encrypt-content" type="text" class="form-control text-monospace" placeholder="Cleartext" rows="5"></textarea>
 								</div>
-							</div>
-							
-							<div class="row">
-								<div class="col-lg-5 form-group">
+								
+								<div class="form-group">
 									<label for="encrypt-password">Password</label>
-									<input id="encrypt-password" type="password" class="form-control" placeholder="Password"/>
+									<input id="encrypt-password" type="password" class="form-control text-monospace" placeholder="Password"/>
 								</div>
 								
-								<div class="col-lg-5 form-group">
+								<div class="form-group">
 									<label for="encrypt-kd-iterations">PBKDF2 Iterations</label>
-									<input id="encrypt-kd-iterations" type="text" class="form-control" placeholder="250000"/>
+									<input id="encrypt-kd-iterations" type="text" class="form-control text-monospace" placeholder="500000"/>
 								</div>
 								
-								<div class="col-lg-2 form-group">
-									<label>&nbsp;</label>
+								<div class="form-group my-4">
 									<button id="button-encrypt" class="btn btn-primary btn-block" type="submit">Encrypt</button>
 								</div>
-							</div>
-							<div class="row result-row">
-								<div class="col-lg-12 form-group">
-									<label for="encrypt-result">Result</label>
-									<input type="text" id="encrypt-result" class="form-control"/>
+
+								<hr class="my-5" />
+
+								<div class="row result-row">
+									<div class="col-lg-12 form-group">
+										<label for="encrypt-result">Encrypted Data</label>
+										<textarea id="encrypt-result" class="form-control text-monospace" rows="10"></textarea>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</form>
-		
-				<form id="decrypt-form">
-					<div>
-						<h1>Decrypt</h1>
-						
-						<div class="section-body">
-							<div class="row">
-								<div class="col-lg-5 form-group">
-									<label for="encrypt-content">Ciphertext</label>
-									<input id="decrypt-content" type="text" class="form-control" placeholder="Ciphertext"/>
+					</form>
+				</div>
+				<div class="tab-pane active" id="decrypt" role="tabpanel" aria-labelledby="decrypt-tab">
+					<form id="decrypt-form">
+						<div>
+							<div class="section-body">
+								<div class="form-group">
+									<label for="decrypt-content">Data to Decrypt</label>
+									<textarea id="decrypt-content" class="form-control text-monospace" placeholder="Ciphertext" rows="7"></textarea>
 								</div>
 								
-								<div class="col-lg-5 form-group">
-									<label for="encrypt-content">Password</label>
-									<input id="decrypt-password" type="password" class="form-control" placeholder="Password"/>
+								<div class="form-group">
+									<label for="decrypt-password">Password</label>
+									<input id="decrypt-password" type="password" class="form-control text-monospace" placeholder="Password"/>
 								</div>
 								
-								<div class="col-lg-2 form-group">
-									<label>&nbsp;</label>
+								<div class="form-group my-4">
 									<button id="button-decrypt" class="btn btn-primary btn-block" type="submit">Decrypt</button>
 								</div>
-							</div>
-							<div class="row result-row">
-								<div class="col-lg-12 form-group">
-									<label for="decrypt-result">Result</label>
-									<textarea type="text" id="decrypt-result" class="form-control" rows="5"></textarea>
+
+								<hr class="my-5"/>
+
+								<div class="row result-row">
+									<div class="col-lg-12 form-group">
+										<label for="decrypt-result">Decrypted Data</label>
+										<textarea type="text" id="decrypt-result" class="form-control text-monospace" rows="10"></textarea>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</form>
-			</div>
-			
-			<div class="col-lg-2 col-sm-0">
+					</form>
+				</div>
 			</div>
 		</div>
 		
@@ -130,7 +92,7 @@
 		<script src="sjcl.js"></script>
 		<script src="jquery.base64.js"></script>
 		<script src="index.js"></script>
-		<script src="bootstrap/js/bootstrap.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
 
 		<script>
 			$(document).ready(function() {
@@ -144,7 +106,7 @@
 					var kdIterations = $("#encrypt-kd-iterations").val();
 					
 					if (kdIterations == "") {
-						kdIterations = 250000;
+						kdIterations = 500000;
 					}
 					
 					var result = aes_encrypt(plaintext, password, 256, kdIterations);
